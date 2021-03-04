@@ -4,7 +4,7 @@
   "description": "\"API server for Collection-RPG-Fighting web game Poxey\"",
   "main": "index.js",
   "scripts": {
-    "start": "node /src/index.js"
+    "start": "node ./src/index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/PoxeyCo/poxey-api/issues"
   },
-  "homepage": "https://github.com/PoxeyCo/poxey-api#readme"
+  "homepage": "https://github.com/PoxeyCo/poxey-api#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.6.4",
+    "mongoose": "^5.11.18"
+  }
 }
