@@ -1,0 +1,19 @@
+{
+  "name": "poxey-api",
+  "version": "0.0.1",
+  "description": "\"API server for Collection-RPG-Fighting web game Poxey\"",
+  "main": "index.js",
+  "scripts": {
+    "start": "node /src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PoxeyCo/poxey-api.git"
+  },
+  "author": "Mowl (Gleb Alfutin)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PoxeyCo/poxey-api/issues"
+  },
+  "homepage": "https://github.com/PoxeyCo/poxey-api#readme"
+}
