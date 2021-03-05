@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/PoxeyCo/poxey-api#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "mongodb": "^3.6.4",
     "mongoose": "^5.11.18"
