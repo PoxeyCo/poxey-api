@@ -21,3 +21,15 @@ module.exports.addUser = async ({ email, username, password }) => {
 
     return Object.freeze(dbUser);
 };
+
+module.exports.findUserByEmail = async (email) => {
+    const foundUser = await User.findOne({ email });
+
+    return foundUser;
+};
+
+module.exports.findUserByName = async (username) => {
+    const foundUser = await User.findOne({ username });
+
+    return foundUser;
+}

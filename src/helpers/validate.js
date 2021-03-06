@@ -1,4 +1,4 @@
-module.exports.validateRegister = ({email, username, password}) => {
+module.exports.validateRegister = async ({ email, username, password, userActions }) => {
     const errors = [];
 
     if (this.validateEmail(email) === false) {
@@ -11,6 +11,18 @@ module.exports.validateRegister = ({email, username, password}) => {
 
     if (this.validatePassword(password) === false) {
         errors.push(3);
+    }
+
+    let user = await userActions.findUserByEmail(email);
+
+    if (user) {
+        errors.push(4);
+    }
+
+    user = await userActions.findUserByName(username);
+
+    if (user) {
+        errors.push(5);
     }
 
     return errors;
