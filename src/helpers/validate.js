@@ -1,15 +1,29 @@
-module.exports.validateRegister = async ({ email, username, password, userActions }) => {
+module.exports.validateSignIn = async ({ login, password }) => {
     const errors = [];
 
-    if (this.validateEmail(email) === false) {
+    if (login === undefined) {
         errors.push(1);
     }
 
-    if (this.validateUsername(username) === false) {
+    if (this.validatePassword(password) === false && password === undefined) {
         errors.push(2);
     }
 
-    if (this.validatePassword(password) === false) {
+    return errors;
+};
+
+module.exports.validateRegister = async ({ email, username, password, userActions }) => {
+    const errors = [];
+
+    if (this.validateEmail(email) === false && email === undefined) {
+        errors.push(1);
+    }
+
+    if (this.validateUsername(username) === false && username === undefined) {
+        errors.push(2);
+    }
+
+    if (this.validatePassword(password) === false && password === undefined) {
         errors.push(3);
     }
 
@@ -39,6 +53,9 @@ module.exports.validatePassword = (password) => {
 };
 
 module.exports.validateUsername = (username) => {
+    if (username === undefined)
+        return false;
+
     return this.validateLength(username, 4, 30);
 };
 

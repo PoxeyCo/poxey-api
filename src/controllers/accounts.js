@@ -3,6 +3,54 @@ const crypt = require('./../helpers/crypt');
 const jwtToken = require('../helpers/jwtToken');
 const userActions = require('./../db/user/userActions');
 
+module.exports.sigin = async (req, res) => {
+    const { login, password } = req.body;
+    const errors = await validate.validateSignIn({ login, password });
+
+    if (errors.length !== 0) {
+        return res.status(400).json({
+            status: false,
+            errors
+        });
+    }
+
+    let foundUser = validate.validateEmail(login) ? await userActions.findUserByEmail(login) : await userActions.findUserByName(login);
+
+    if (foundUser === null) {
+        return res.status(400).json({
+            status: false,
+            errors: [3]
+        });
+    }
+
+    const passwordMatch = await crypt.comparePassword(password, foundUser.password);
+
+    if (passwordMatch === false) {
+        return res.status(400).json({
+            status: false,
+            errors: [4]
+        });
+    }
+
+    const accessToken = await jwtToken.generateAccess(foundUser);
+    const refreshToken = await jwtToken.generateRefresh(foundUser);
+
+    res.status(200).json({
+        status: true,
+        user: {
+            _id: foundUser._id,
+            email: foundUser.email,
+            username: foundUser.username,
+            avatarId: foundUser.avatarId,
+            cash: foundUser.cash
+        },
+        tokens: {
+            access: accessToken,
+            refresh: refreshToken
+        }
+    });
+};
+
 module.exports.register = async (req, res) => {
     const { email, username, password } = req.body;
     const errors = await validate.validateRegister({ email, username, password, userActions });

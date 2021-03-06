@@ -3,6 +3,7 @@ const accountsController = require('./../controllers/accounts');
 
 const router = express.Router();
 
+router.post('/signin', accountsController.sigin);
 router.post('/register', accountsController.register);
 router.post('/refresh-token', accountsController.refreshToken);
 
