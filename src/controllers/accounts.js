@@ -3,7 +3,7 @@ const crypt = require('./../helpers/crypt');
 const jwtToken = require('../helpers/jwtToken');
 const userActions = require('./../db/user/userActions');
 
-module.exports.sigin = async (req, res) => {
+module.exports.signIn = async (req, res) => {
     const { login, password } = req.body;
     const errors = await validate.validateSignIn({ login, password });
 
@@ -86,6 +86,30 @@ module.exports.register = async (req, res) => {
             access: accessToken,
             refresh: refreshToken
         }
+    });
+};
+
+module.exports.getUserInfo = async (req, res) => {
+    const { id } = req.params;
+
+    const foundUser = await userActions.findUserById(id);
+
+    if (foundUser === null) {
+        return res.status(400).json({
+            status: false,
+            error: 'Cant find user with given id'
+        });
+    }
+
+    res.status(200).json({
+        status: true,
+        user: {
+            _id: foundUser._id,
+            email: foundUser.email,
+            username: foundUser.username,
+            avatarId: foundUser.avatarId,
+            cash: foundUser.cash
+        },
     });
 };
 

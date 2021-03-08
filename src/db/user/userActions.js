@@ -22,6 +22,15 @@ module.exports.addUser = async ({ email, username, password }) => {
     return Object.freeze(dbUser);
 };
 
+module.exports.findUserById = async (id) => {
+    try {
+        const foundUser = await User.findOne({ _id: id });
+        return foundUser;
+    } catch (e) {
+        return null;
+    }
+};
+
 module.exports.findUserByEmail = async (email) => {
     const foundUser = await User.findOne({ email });
 
