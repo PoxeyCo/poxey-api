@@ -11,7 +11,7 @@ module.exports.warning = (message) => {
 };
 
 module.exports.error = (message) => {
-    console.error('\x1b[31m%s\x1b[0m', `[Warning] ${message}`);
+    console.error('\x1b[31m%s\x1b[0m', `[Error] ${message}`);
 };
 
 module.exports.request = (req) => {

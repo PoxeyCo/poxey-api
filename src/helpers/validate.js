@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 module.exports.validateSignIn = async ({ login, password }) => {
     const errors = [];
 

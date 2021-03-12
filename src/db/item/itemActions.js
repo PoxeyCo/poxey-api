@@ -1,12 +1,13 @@
 const Item = require('./itemModel');
 const logger = require('./../../helpers/logger');
 
-module.exports.addItem = async ({ title, description, rarity, type }) => {
+module.exports.addItem = async ({ title, description, rarity, type, power }) => {
     const newItem = {
         title,
         description,
         rarity,
-        type
+        type,
+        power
     };
 
     const dbItem = new Item(newItem);
