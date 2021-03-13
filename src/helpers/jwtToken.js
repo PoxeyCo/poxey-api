@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 
-module.exports.generateAccess = async ({ _id, email }) => {
+module.exports.generateAccess = async ({ _id, email, isAdmin }) => {
     const payload = {
         id: _id.toString(),
-        email
+        email,
+        isAdmin
     };
 
     const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
@@ -16,10 +17,11 @@ module.exports.generateAccess = async ({ _id, email }) => {
     return token;
 };
 
-module.exports.generateRefresh = async ({ _id, email }) => {
+module.exports.generateRefresh = async ({ _id, email, isAdmin }) => {
     const payload = {
         id: _id.toString(),
-        email
+        email,
+        isAdmin
     };
 
     const token = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {

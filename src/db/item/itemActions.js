@@ -1,12 +1,14 @@
 const Item = require('./itemModel');
+const itemTypes = require('./../../types/itemTypes');
+const rarityTypes = require('./../../types/rarityTypes');
 const logger = require('./../../helpers/logger');
 
 module.exports.addItem = async ({ title, description, rarity, type, power }) => {
     const newItem = {
         title,
         description,
-        rarity,
-        type,
+        rarity: rarityTypes[rarity.toUpperCase()],
+        type: itemTypes[type.toUpperCase()],
         power
     };
 

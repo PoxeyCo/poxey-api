@@ -41,4 +41,4 @@ module.exports.findUserByName = async (username) => {
     const foundUser = await User.findOne({ username });
 
     return foundUser;
-}
+};
