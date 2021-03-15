@@ -7,15 +7,15 @@ module.exports.createCharacter = async ({ userId }) => {
         userId: ObjectId(userId)
     };
 
-    const dbCharacter = new Character(newCharacter);
-
     try {
+        const dbCharacter = new Character(newCharacter);
         await dbCharacter.save();
+
+        return Object.freeze(dbCharacter);
     } catch (err) {
         logger.error('Error with creating character');
+        return null;
     }
-
-    return Object.freeze(dbCharacter);
 };
 
 module.exports.findCharacterById = async (id) => {
@@ -23,6 +23,7 @@ module.exports.findCharacterById = async (id) => {
         const foundCharacter = await Character.findOne({ _id: id });
         return foundCharacter;
     } catch (e) {
+        logger.error('Error with finding character by id');
         return null;
     }
 };

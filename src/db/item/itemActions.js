@@ -12,15 +12,15 @@ module.exports.addItem = async ({ title, description, rarity, type, power }) => 
         power
     };
 
-    const dbItem = new Item(newItem);
-
     try {
+        const dbItem = new Item(newItem);
         await dbItem.save();
+
+        return Object.freeze(dbItem);
     } catch (err) {
         logger.error('Error with creating item');
+        return null;
     }
-
-    return Object.freeze(dbItem);
 };
 
 module.exports.findItemById = async (id) => {
@@ -33,13 +33,21 @@ module.exports.findItemById = async (id) => {
 };
 
 module.exports.findItemsByTitle = async (title) => {
-    const foundItems = await Item.find({ title });
-
-    return foundItems;
+    try {
+        const foundItems = await Item.find({ title });
+        return foundItems;
+    } catch (e) {
+        logger.error('Error with find items by title');
+        return null;
+    }
 };
 
 module.exports.findItemsByType = async (type) => {
-    const foundItems = await Item.find({ type });
-
-    return foundItems;
+    try {
+        const foundItems = await Item.find({ type });
+        return foundItems;
+    } catch(e) {
+        logger.error('Error with finding items by type');
+        return null;
+    }
 };
