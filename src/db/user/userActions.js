@@ -11,15 +11,15 @@ module.exports.addUser = async ({ email, username, password }) => {
         avatarId: random.randomInteger(1, 5)
     };
 
-    const dbUser = new User(newUserObject);
-
     try {
+        const dbUser = new User(newUserObject);
         await dbUser.save();
+
+        return Object.freeze(dbUser);
     } catch (err) {
         logger.error('Error with creating user');
+        return null;
     }
-
-    return Object.freeze(dbUser);
 };
 
 module.exports.findUserById = async (id) => {
@@ -32,13 +32,21 @@ module.exports.findUserById = async (id) => {
 };
 
 module.exports.findUserByEmail = async (email) => {
-    const foundUser = await User.findOne({ email });
-
-    return foundUser;
+    try {
+        const foundUser = await User.findOne({ email });
+        return foundUser;
+    } catch (e) {
+        logger.error('Error with finding user by email');
+        return null;
+    }
 };
 
 module.exports.findUserByName = async (username) => {
-    const foundUser = await User.findOne({ username });
-
-    return foundUser;
+    try {
+        const foundUser = await User.findOne({ username });
+        return foundUser;
+    } catch (e) {
+        logger.error('Error with finding user by username');
+        return null;
+    }
 }

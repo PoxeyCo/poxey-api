@@ -14,15 +14,16 @@ module.exports.addAdventure = async ({ userId, characterId, levelId }) => {
         endTime
     };
 
-    const dbAdventure = new Adventure(newAdventure);
 
     try {
+        const dbAdventure = new Adventure(newAdventure);
         await dbAdventure.save();
+
+        return Object.freeze(dbAdventure);
     } catch (err) {
         logger.error('Error with creating item');
+        return null;
     }
-
-    return Object.freeze(dbAdventure);
 };
 
 module.exports.findAdventureById = async (id) => {
@@ -30,6 +31,7 @@ module.exports.findAdventureById = async (id) => {
         const foundAdventure = await Adventure.findOne({ _id: id });
         return foundAdventure;
     } catch (e) {
+        logger.error('Error with finding adventure by id');
         return null;
     }
 };

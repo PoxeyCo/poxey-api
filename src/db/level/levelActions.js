@@ -9,15 +9,35 @@ module.exports.addLevel = async ({ number, power, dropItems, duration }) => {
         duration
     };
 
-    const dbLevel = new Level(newLevel);
-
     try {
+        const dbLevel = new Level(newLevel);
         await dbLevel.save();
-    } catch (err) {
-        logger.error('Error with creating item');
-    }
 
-    return Object.freeze(dbLevel);
+        return Object.freeze(dbLevel);
+    } catch (err) {
+        logger.error('Error with creating level');
+        return null;
+    }
+};
+
+module.exports.getAllLevels = async () => {
+    try {
+        const levels = await Level.find();
+        return levels;
+    } catch (e) {
+        logger.error('Error with getting all levels');
+        return null;
+    }
+};
+
+module.exports.getLevelsInRange = async (min, max) => {
+    try {
+        const levels = await Level.find({ number: { $gte: min, $lte: max } });
+        return levels;
+    } catch (e) {
+        logger.error('Error with getting levels in range');
+        return null;
+    }
 };
 
 module.exports.findLevelById = async (id) => {
@@ -25,12 +45,17 @@ module.exports.findLevelById = async (id) => {
         const foundLevel = await Level.findOne({ _id: id });
         return foundLevel;
     } catch (e) {
+        logger.error('Error with finding level by id');
         return null;
     }
 };
 
 module.exports.findLevelByNumber = async (number) => {
-    const foundLevel = await Level.findOne({ number });
-
-    return foundLevel;
+    try {
+        const foundLevel = await Level.findOne({ number });
+        return foundLevel;
+    } catch (e) {
+        logger.error('Error with finding level by number');
+        return null;
+    }
 };
