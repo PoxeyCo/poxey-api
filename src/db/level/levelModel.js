@@ -9,10 +9,16 @@ const levelSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    dropItems: {
-        type: Array,
-        required: true
-    },
+    dropItems: [{
+        itemId: {
+            type: mongoose.ObjectId,
+            required: true
+        },
+        chance: {
+            type: Number,
+            required: true
+        }
+    }],
     duration: {
         type: Number,
         required: true
