@@ -51,3 +51,17 @@ module.exports.findItemsByType = async (type) => {
         return null;
     }
 };
+
+module.exports.isThereItems = async (itemIds) => {
+    itemIds.forEach(async (id, index) => {
+        const foundItem = await this.findItemById(id);
+
+        if (foundItem === null) {
+            return false;
+        }
+
+        if (index + 1 >= itemIds.length) {
+            return true;
+        }
+    });
+}

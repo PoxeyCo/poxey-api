@@ -71,6 +71,24 @@ module.exports.validateAddItem = ({ title, description, rarity, type, power }) =
     return errors;
 };
 
+module.exports.validateAddLevel = ({ number, power, duration, dropItems }) => {
+    const errors = [];
+    
+    if (isNaN(number)) {
+        errors.push(1)
+    }
+
+    if (isNaN(power)) {
+        errors.push(2)
+    }
+
+    if (isNaN(duration)) {
+        errors.push(3)
+    }
+
+    return errors;
+}
+
 module.exports.validateEmail = (email) => {
     const emailRegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegExp.test(String(email).toLowerCase());
