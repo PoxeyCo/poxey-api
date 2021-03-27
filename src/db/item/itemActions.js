@@ -52,16 +52,18 @@ module.exports.findItemsByType = async (type) => {
     }
 };
 
-module.exports.isThereItems = async (itemIds) => {
-    itemIds.forEach(async (id, index) => {
-        const foundItem = await this.findItemById(id);
+module.exports.isValidItems = async (itemIds) => {
+    return new Promise((resolve, reject) => {
+        itemIds.forEach(async (id, index) => {
+            const foundItem = await this.findItemById(id);
 
-        if (foundItem === null) {
-            return false;
-        }
+            if (foundItem === null) {
+                resolve(false);
+            }
 
-        if (index + 1 >= itemIds.length) {
-            return true;
-        }
+            if (index + 1 >= itemIds.length) {
+                resolve(true);
+            }
+        });
     });
 }

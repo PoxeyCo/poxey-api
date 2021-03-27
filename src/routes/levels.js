@@ -3,6 +3,9 @@ const levelsController = require('./../controllers/levels');
 
 const router = express.Router();
 
+router.get('/', levelsController.getLevels);
+router.get('/:number', levelsController.getLevelByNumber);
+
 router.post('/', levelsController.addLevel);
 
 module.exports.init = (app, apiVersion, logger) => {

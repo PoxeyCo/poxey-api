@@ -73,7 +73,7 @@ module.exports.validateAddItem = ({ title, description, rarity, type, power }) =
 
 module.exports.validateAddLevel = ({ number, power, duration, dropItems }) => {
     const errors = [];
-    
+
     if (isNaN(number)) {
         errors.push(1)
     }
@@ -84,6 +84,18 @@ module.exports.validateAddLevel = ({ number, power, duration, dropItems }) => {
 
     if (isNaN(duration)) {
         errors.push(3)
+    }
+
+    let chanceError = false;
+
+    dropItems.forEach((item) => {
+        if (isNaN(item.chance) || (item.chance < 0 || item.chance > 1)) {
+            chanceError = true;
+        }
+    });
+
+    if (chanceError) {
+        errors.push(6);
     }
 
     return errors;

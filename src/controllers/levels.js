@@ -1,6 +1,7 @@
 const validate = require('./../helpers/validate');
 const logger = require('./../helpers/logger');
 const levelActions = require('./../db/level/levelActions');
+const itemActions = require('./../db/item/itemActions');
 
 module.exports.addLevel = async (req, res) => {
     if (req.isAuth === false || req.userPayload.isAdmin === false) {
@@ -19,10 +20,7 @@ module.exports.addLevel = async (req, res) => {
         });
     }
 
-    const { number, power, duration, dropItems } = req.body;
-
-    const itemIds = dropItems.map((item) => item.itemId);
-    console.log(itemIds);
+    const { number, dropItems } = req.body;
 
     try {
         const foundLevel = await levelActions.findLevelByNumber(number);
@@ -39,21 +37,72 @@ module.exports.addLevel = async (req, res) => {
         logger.error('Problem with finding level by number');
     }
 
-    // try {
-    //     const newLevel = await levelActions.addLevel(req.body);
+    const itemIds = dropItems.map((item) => item.itemId);
+    const isValidItems = await itemActions.isValidItems(itemIds);
 
-    //     res.status(200).json({
-    //         status: true,
-    //         level: newLevel
-    //     });
-    // } catch (err) {
-    //     logger.error('Problem with creating level');
+    if (isValidItems === false) {
+        return res.status(400).json({
+            status: false,
+            errors: [5]
+        });
+    }
 
-    //     res.status(500).json({
-    //         status: false,
-    //         error: 'Can not create a new level'
-    //     });
-    // }
+    try {
+        const newLevel = await levelActions.addLevel(req.body);
 
-    res.send(1);
+        res.status(200).json({
+            status: true,
+            level: newLevel
+        });
+    } catch (err) {
+        logger.error('Problem with creating level');
+
+        res.status(500).json({
+            status: false,
+            error: 'Can not create a new level'
+        });
+    }
+};
+
+module.exports.getLevels = async (req, res) => {
+    try {
+        const levels = await levelActions.getAllLevels();
+
+        res.status(200).json({
+            status: true,
+            levels
+        });
+    } catch (err) {
+        logger.error('Problem with getting all levels');
+
+        res.status(500).json({
+            status: false,
+            error: 'Can not get all levels'
+        });
+    }
+};
+
+module.exports.getLevelByNumber = async (req, res) => {
+    const { number } = req.params;
+
+    if (isNaN(number) || number < 1) {
+        return res.status(400).json({
+            status: false,
+            error: 'Incorrect level number'
+        });
+    }
+
+    const level = await levelActions.findLevelByNumber(number);
+
+    if (level === null) {
+        return res.status(400).json({
+            status: false,
+            error: 'Can not find level with this number'
+        });
+    }
+
+    res.status(200).json({
+        status: true,
+        level
+    });
 };
