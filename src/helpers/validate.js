@@ -18,15 +18,15 @@ module.exports.validateSignIn = async ({ login, password }) => {
 module.exports.validateRegister = async ({ email, username, password, userActions }) => {
     const errors = [];
 
-    if (this.validateEmail(email) === false && email === undefined) {
+    if (this.validateEmail(email) === false || email === undefined) {
         errors.push(1);
     }
 
-    if (this.validateUsername(username) === false && username === undefined) {
+    if (this.validateUsername(username) === false || username === undefined) {
         errors.push(2);
     }
 
-    if (this.validatePassword(password) === false && password === undefined) {
+    if (this.validatePassword(password) === false || password === undefined) {
         errors.push(3);
     }
 
