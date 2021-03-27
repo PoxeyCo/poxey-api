@@ -1,5 +1,6 @@
 const validate = require('./../helpers/validate');
 const itemActions = require('./../db/item/itemActions');
+const logger = require('./../helpers/logger');
 
 module.exports.addItem = async (req, res) => {
     if (req.isAuth === false || req.userPayload.isAdmin === false) {
@@ -42,6 +43,7 @@ module.exports.getItems = async (req, res) => {
             status: true,
             page,
             totalCount: items.length,
+            totalPages: Math.floor(items.length / 10) + 1,
             items: items.slice(10 * (page - 1), 10 * page)
         });
     } catch (err) {
