@@ -27,12 +27,22 @@ module.exports.addItem = async (req, res) => {
 };
 
 module.exports.getItems = async (req, res) => {
+    let { page } = req.query;
+
+    if (isNaN(page) || page === undefined) {
+        page = 1;
+    }
+
+    page = Number(page);
+
     try {
         const items = await itemActions.getAllItems();
 
         res.status(200).json({
             status: true,
-            items
+            page,
+            totalCount: items.length,
+            items: items.slice(10 * (page - 1), 10 * page)
         });
     } catch (err) {
         logger.error('Problem with getting all items');
