@@ -23,6 +23,16 @@ module.exports.addItem = async ({ title, description, rarity, type, power }) => 
     }
 };
 
+module.exports.getAllItems = async () => {
+    try {
+        const items = await Item.find();
+        return items;
+    } catch (e) {
+        logger.error('Error with getting all items');
+        return null;
+    }
+};
+
 module.exports.findItemById = async (id) => {
     try {
         const foundItem = await Item.findOne({ _id: id });

@@ -3,6 +3,8 @@ const itemsController = require('./../controllers/items');
 
 const router = express.Router();
 
+router.get('/', itemsController.getItems);
+
 router.post('/', itemsController.addItem);
 
 module.exports.init = (app, apiVersion, logger) => {

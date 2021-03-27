@@ -25,3 +25,21 @@ module.exports.addItem = async (req, res) => {
         item: newItem
     });
 };
+
+module.exports.getItems = async (req, res) => {
+    try {
+        const items = itemActions.getAllItems();
+
+        res.status(200).json({
+            status: true,
+            items
+        });
+    } catch (err) {
+        logger.error('Problem with getting all items');
+
+        res.status(500).json({
+            status: false,
+            error: 'Can not get all items'
+        });
+    }
+};
