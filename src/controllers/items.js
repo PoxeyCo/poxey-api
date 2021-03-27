@@ -28,7 +28,7 @@ module.exports.addItem = async (req, res) => {
 
 module.exports.getItems = async (req, res) => {
     try {
-        const items = itemActions.getAllItems();
+        const items = await itemActions.getAllItems();
 
         res.status(200).json({
             status: true,
