@@ -28,13 +28,18 @@ module.exports.addItem = async (req, res) => {
 };
 
 module.exports.getItems = async (req, res) => {
-    let { page } = req.query;
+    let { page, limit } = req.query;
 
     if (isNaN(page) || page === undefined) {
         page = 1;
     }
 
+    if (isNaN(limit) || limit === undefined) {
+        limit = 10;
+    }
+
     page = Number(page);
+    limit = Number(limit);
 
     try {
         const items = await itemActions.getAllItems();
@@ -43,8 +48,8 @@ module.exports.getItems = async (req, res) => {
             status: true,
             page,
             totalCount: items.length,
-            totalPages: Math.floor(items.length / 10) + 1,
-            items: items.slice(10 * (page - 1), 10 * page)
+            totalPages: Math.floor(items.length / limit) + 1,
+            items: items.slice(limit * (page - 1), limit * page)
         });
     } catch (err) {
         logger.error('Problem with getting all items');
