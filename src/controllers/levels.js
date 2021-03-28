@@ -65,13 +65,18 @@ module.exports.addLevel = async (req, res) => {
 };
 
 module.exports.getLevels = async (req, res) => {
-    let { page } = req.query;
+    let { page, limit } = req.query;
 
     if (isNaN(page) || page === undefined) {
         page = 1;
     }
 
+    if (isNaN(limit) || limit === undefined) {
+        limit = 10;
+    }
+
     page = Number(page);
+    limit = Number(limit);
 
     try {
         const levels = await levelActions.getAllLevels();
@@ -79,8 +84,8 @@ module.exports.getLevels = async (req, res) => {
         res.status(200).json({
             status: true,
             totalCount: levels.length,
-            totalPages: Math.floor(levels.length / 10) + 1,
-            levels: levels.slice(10 * (page - 1), 10 * page)
+            totalPages: Math.floor(levels.length / limit) + 1,
+            levels: levels.slice(limit * (page - 1), limit * page)
         });
     } catch (err) {
         logger.error('Problem with getting all levels');
