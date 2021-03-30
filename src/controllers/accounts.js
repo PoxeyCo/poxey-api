@@ -44,9 +44,9 @@ module.exports.signIn = async (req, res) => {
             username: foundUser.username,
             avatarId: foundUser.avatarId,
             cash: foundUser.cash,
-            level: newUser.level,
-            expToNextLevel: newUser.expToNextLevel,
-            experience: newUser.experience
+            level: foundUser.level,
+            expToNextLevel: foundUser.expToNextLevel,
+            experience: foundUser.experience
         },
         tokens: {
             access: accessToken,
