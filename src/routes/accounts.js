@@ -3,6 +3,7 @@ const accountsController = require('./../controllers/accounts');
 
 const router = express.Router();
 
+router.get('/', accountsController.getUsers);
 router.get('/:id', accountsController.getUserInfo);
 
 router.post('/signin', accountsController.signIn);

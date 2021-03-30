@@ -84,7 +84,7 @@ module.exports.getLevels = async (req, res) => {
         res.status(200).json({
             status: true,
             totalCount: levels.length,
-            totalPages: Math.floor(levels.length / limit) + 1,
+            totalPages: Math.ceil(levels.length / limit),
             levels: levels.slice(limit * (page - 1), limit * page)
         });
     } catch (err) {

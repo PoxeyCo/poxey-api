@@ -48,7 +48,7 @@ module.exports.getItems = async (req, res) => {
             status: true,
             page,
             totalCount: items.length,
-            totalPages: Math.floor(items.length / limit) + 1,
+            totalPages: Math.ceil(items.length / limit),
             items: items.slice(limit * (page - 1), limit * page)
         });
     } catch (err) {

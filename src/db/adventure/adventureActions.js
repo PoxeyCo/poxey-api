@@ -14,7 +14,6 @@ module.exports.addAdventure = async ({ userId, characterId, levelId }) => {
         endTime
     };
 
-
     try {
         const dbAdventure = new Adventure(newAdventure);
         await dbAdventure.save();

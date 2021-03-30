@@ -22,11 +22,22 @@ module.exports.addUser = async ({ email, username, password }) => {
     }
 };
 
+module.exports.getAllUsers = async () => {
+    try {
+        const users = await User.find();
+        return users;
+    } catch (e) {
+        logger.error('Error with getting all users');
+        return null;
+    }
+};
+
 module.exports.findUserById = async (id) => {
     try {
         const foundUser = await User.findOne({ _id: id });
         return foundUser;
     } catch (e) {
+        logger.error('Error with finding user by id');
         return null;
     }
 };

@@ -2,6 +2,7 @@ const validate = require('./../helpers/validate');
 const crypt = require('./../helpers/crypt');
 const jwtToken = require('../helpers/jwtToken');
 const userActions = require('./../db/user/userActions');
+const logger = require('./../helpers/logger');
 
 module.exports.signIn = async (req, res) => {
     const { login, password } = req.body;
@@ -87,6 +88,52 @@ module.exports.register = async (req, res) => {
             refresh: refreshToken
         }
     });
+};
+
+module.exports.getUsers = async (req, res) => {
+    let { page, limit } = req.query;
+
+    if (isNaN(page) || page === undefined) {
+        page = 1;
+    }
+
+    if (isNaN(limit) || limit === undefined) {
+        limit = 10;
+    }
+
+    page = Number(page);
+    limit = Number(limit);
+
+    try {
+        const rawUsers = await userActions.getAllUsers();
+
+        const users = rawUsers.map((user) => {
+            return {
+                email: user.email,
+                username: user.username,
+                cash: user.cash,
+                registeredOn: user.registeredOn,
+                isAdmin: user.isAdmin,
+                isBanned: user.isBanned,
+                banOver: user.banOver
+            };
+        });
+
+        res.status(200).json({
+            status: true,
+            page,
+            totalCount: users.length,
+            totalPages: Math.ceil(users.length / limit),
+            users: users.slice(limit * (page - 1), limit * page)
+        });
+    } catch (err) {
+        logger.error('Problem with getting all users');
+
+        res.status(500).json({
+            status: false,
+            error: 'Can not get all users'
+        });
+    }
 };
 
 module.exports.getUserInfo = async (req, res) => {
