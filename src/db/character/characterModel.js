@@ -5,16 +5,6 @@ const characterSchema = new mongoose.Schema({
         type: mongoose.ObjectId,
         required: true
     },
-    level: {
-        type: Number,
-        required: false,
-        default: 1
-    },
-    expToNextLevel: {
-        type: Number,
-        required: false,
-        default: 100
-    },
     items: {
         type: Array,
         required: false,

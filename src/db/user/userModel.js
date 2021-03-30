@@ -13,6 +13,21 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    level: {
+        type: Number,
+        required: false,
+        default: 1
+    },
+    experience: {
+        type: Number,
+        required: false,
+        default: 0
+    },
+    expToNextLevel: {
+        type: Number,
+        required: false,
+        default: 100
+    },
     cash: {
         type: Number,
         required: true

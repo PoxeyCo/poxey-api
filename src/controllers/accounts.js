@@ -43,7 +43,10 @@ module.exports.signIn = async (req, res) => {
             email: foundUser.email,
             username: foundUser.username,
             avatarId: foundUser.avatarId,
-            cash: foundUser.cash
+            cash: foundUser.cash,
+            level: newUser.level,
+            expToNextLevel: newUser.expToNextLevel,
+            experience: newUser.experience
         },
         tokens: {
             access: accessToken,
@@ -81,7 +84,10 @@ module.exports.register = async (req, res) => {
             email: newUser.email,
             username: newUser.username,
             avatarId: newUser.avatarId,
-            cash: newUser.cash
+            cash: newUser.cash,
+            level: newUser.level,
+            expToNextLevel: newUser.expToNextLevel,
+            experience: newUser.experience
         },
         tokens: {
             access: accessToken,
@@ -114,6 +120,9 @@ module.exports.getUsers = async (req, res) => {
                 username: user.username,
                 cash: user.cash,
                 registeredOn: user.registeredOn,
+                level: newUser.level,
+                experience: newUser.experience,
+                expToNextLevel: newUser.expToNextLevel,
                 isAdmin: user.isAdmin,
                 isBanned: user.isBanned,
                 banOver: user.banOver
@@ -156,7 +165,10 @@ module.exports.getUserInfo = async (req, res) => {
             email: foundUser.email,
             username: foundUser.username,
             avatarId: foundUser.avatarId,
-            cash: foundUser.cash
+            cash: foundUser.cash,
+            level: newUser.level,
+            expToNextLevel: newUser.expToNextLevel,
+            experience: newUser.experience,
         },
     });
 };

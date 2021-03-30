@@ -4,7 +4,14 @@ const ObjectId = require('mongodb').ObjectId;
 
 module.exports.createCharacter = async ({ userId }) => {
     const newCharacter = {
-        userId: ObjectId(userId)
+        userId: ObjectId(userId),
+        selectedItems: {
+            helmet: null,
+            chest: '606033503b3b550004aac9fe',
+            boots: '606033fd3b3b550004aaca08',
+            weapon: '6060349b3b3b550004aaca11'
+        },
+        items: ['606033503b3b550004aac9fe', '606033fd3b3b550004aaca08', '6060349b3b3b550004aaca11']
     };
 
     try {

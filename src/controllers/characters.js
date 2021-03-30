@@ -53,7 +53,7 @@ module.exports.createCharacter = async (req, res) => {
     const user = await userActions.findUserById(userId);
 
     if (user === null) {
-        return res.status(404).json({
+        return res.status(400).json({
             status: false,
             error: 'Can\'t found user with given id'
         });
