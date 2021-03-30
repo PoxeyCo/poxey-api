@@ -109,6 +109,7 @@ module.exports.getUsers = async (req, res) => {
 
         const users = rawUsers.map((user) => {
             return {
+                id: user._id,
                 email: user.email,
                 username: user.username,
                 cash: user.cash,
