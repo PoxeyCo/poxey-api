@@ -120,9 +120,9 @@ module.exports.getUsers = async (req, res) => {
                 username: user.username,
                 cash: user.cash,
                 registeredOn: user.registeredOn,
-                level: newUser.level,
-                experience: newUser.experience,
-                expToNextLevel: newUser.expToNextLevel,
+                level: user.level,
+                experience: user.experience,
+                expToNextLevel: user.expToNextLevel,
                 isAdmin: user.isAdmin,
                 isBanned: user.isBanned,
                 banOver: user.banOver
