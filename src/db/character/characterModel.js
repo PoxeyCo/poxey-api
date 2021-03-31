@@ -15,6 +15,11 @@ const characterSchema = new mongoose.Schema({
         required: false,
         default: []
     },
+    lastLevelCompleted: {
+        type: Number,
+        required: false,
+        default: 0
+    },
     selectedItems: {
         helmet: {
             type: mongoose.ObjectId,
@@ -36,6 +41,11 @@ const characterSchema = new mongoose.Schema({
             required: false,
             default: null
         }
+    },
+    power: {
+        type: Number,
+        required: false,
+        default: 0
     },
     createdAt: {
         type: Date,

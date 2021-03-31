@@ -21,6 +21,21 @@ const adventureSchema = new mongoose.Schema({
     endTime: {
         type: Date,
         required: true
+    },
+    isCompleted: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    isSuccesful: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    droppedItems: {
+        type: Array,
+        required: false,
+        default: []
     }
 });
 

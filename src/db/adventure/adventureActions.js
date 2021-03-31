@@ -5,7 +5,7 @@ const logger = require('./../../helpers/logger');
 module.exports.addAdventure = async ({ userId, characterId, levelId }) => {
     const choosedLevel = await levelActions.findLevelById(levelId);
 
-    const endTime = Date.now() + (choosedLevel.duration * 1000);
+    const endTime = Date.now() + (choosedLevel.duration);
 
     const newAdventure = {
         userId,
@@ -18,7 +18,7 @@ module.exports.addAdventure = async ({ userId, characterId, levelId }) => {
         const dbAdventure = new Adventure(newAdventure);
         await dbAdventure.save();
 
-        return Object.freeze(dbAdventure);
+        return dbAdventure;
     } catch (err) {
         logger.error('Error with creating item');
         return null;
@@ -31,6 +31,36 @@ module.exports.findAdventureById = async (id) => {
         return foundAdventure;
     } catch (e) {
         logger.error('Error with finding adventure by id');
+        return null;
+    }
+};
+
+module.exports.findAdventureByUserId = async (id) => {
+    try {
+        const foundAdventure = await Adventure.findOne({ userId: id });
+        return foundAdventure;
+    } catch (e) {
+        logger.error('Error with finding adventure by id');
+        return null;
+    }
+};
+
+module.exports.getAllAdventures = async () => {
+    try {
+        const allAdventures = await Adventure.find();
+        return allAdventures;
+    } catch (e) {
+        logger.error('Error with getting all adventures');
+        return null;
+    }
+};
+
+module.exports.findCompletedAdventure = async (id) => {
+    try {
+        const foundAdventure = await Adventure.findOne({ _id: id, isCompleted: true });
+        return foundAdventure;
+    } catch (e) {
+        logger.error('Error with finding completed adventure');
         return null;
     }
 };

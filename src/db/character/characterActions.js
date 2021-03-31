@@ -1,8 +1,11 @@
 const Character = require('./characterModel');
 const logger = require('./../../helpers/logger');
 const ObjectId = require('mongodb').ObjectId;
+const itemActions = require('./../item/itemActions');
 
 module.exports.createCharacter = async ({ userId }) => {
+    const defaultItems = ['606033503b3b550004aac9fe', '606033fd3b3b550004aaca08', '6060349b3b3b550004aaca11'];
+
     const newCharacter = {
         userId: ObjectId(userId),
         selectedItems: {
@@ -11,7 +14,8 @@ module.exports.createCharacter = async ({ userId }) => {
             boots: '606033fd3b3b550004aaca08',
             weapon: '6060349b3b3b550004aaca11'
         },
-        items: ['606033503b3b550004aac9fe', '606033fd3b3b550004aaca08', '6060349b3b3b550004aaca11']
+        power: 14,
+        items: defaultItems
     };
 
     try {
