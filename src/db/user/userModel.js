@@ -73,7 +73,8 @@ const userSchema = new mongoose.Schema({
     },
     dailyRewardLastTaken: {
         type: Date,
-        required: false
+        required: false,
+        default: null
     },
     dailyRewardDaysInRow: {
         type: Number,
