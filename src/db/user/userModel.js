@@ -88,4 +88,18 @@ const userSchema = new mongoose.Schema({
     },
 });
 
+userSchema.methods.addCash = function (cash) {
+    this.cash += cash;
+}
+
+userSchema.methods.addExperience = function (exp) {
+    this.experience += exp;
+
+    if (this.experience > this.expToNextLevel) {
+        this.level += 1;
+        this.experience %= this.expToNextLevel;
+        this.expToNextLevel = this.level * 100;
+    }
+}
+
 module.exports = mongoose.model('User', userSchema);

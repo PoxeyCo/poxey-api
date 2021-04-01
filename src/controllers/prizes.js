@@ -24,14 +24,8 @@ module.exports.getPrize = async (req, res) => {
     const prize = prizesType[foundUser.dailyRewardDaysInRow];
 
     if (prize.type === 'stats') {
-        foundUser.cash += prize.value.cash;
-        foundUser.experience += prize.value.experience;
-
-        if (foundUser.experience > foundUser.expToNextLevel) {
-            foundUser.level += 1;
-            foundUser.experience %= foundUser.expToNextLevel;
-            foundUser.expToNextLevel = foundUser.level * 100;
-        }
+        foundUser.addCash(prize.value.cash);
+        foundUser.addExperience(prize.value.experience);
     }
 
     foundUser.dailyRewardLastTaken = Date.now();
