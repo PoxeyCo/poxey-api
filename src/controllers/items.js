@@ -60,3 +60,22 @@ module.exports.getItems = async (req, res) => {
         });
     }
 };
+
+module.exports.getItem = async (req, res) => {
+    const { itemId } = req.params;
+
+    const foundItem = await itemActions.findItemById(itemId);
+
+    if (foundItem === null) {
+        return res.status(400).json({
+            status: false,
+            errors: [1]
+        });
+    
+    }
+
+    res.status(200).json({
+        status: true,
+        item: foundItem
+    });
+};

@@ -4,6 +4,7 @@ const itemsController = require('./../controllers/items');
 const router = express.Router();
 
 router.get('/', itemsController.getItems);
+router.get('/:itemId', itemsController.getItem);
 
 router.post('/', itemsController.addItem);
 
