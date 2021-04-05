@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get('/', itemsController.getItems);
 router.get('/:itemId', itemsController.getItem);
+router.get('/character', itemsController.getCharacterItems);
 
 router.post('/', itemsController.addItem);
 

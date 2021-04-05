@@ -1,5 +1,6 @@
 const validate = require('./../helpers/validate');
 const itemActions = require('./../db/item/itemActions');
+const characterActions = require('./../db/character/characterActions');
 const logger = require('./../helpers/logger');
 
 module.exports.addItem = async (req, res) => {
@@ -71,11 +72,33 @@ module.exports.getItem = async (req, res) => {
             status: false,
             errors: [1]
         });
-    
+
     }
 
     res.status(200).json({
         status: true,
         item: foundItem
     });
+};
+
+module.exports.getCharacterItems = async (req, res) => {
+    const { id } = req.query;
+
+    if (id === undefined) {
+        return res.status(400).json({
+            status: false,
+            error: 'You have to send id in query'
+        });
+    }
+
+    const foundCharacter = await characterActions.findCharacterById(id);
+
+    if (foundCharacter === null) {
+        return res.status(400).json({
+            status: false,
+            error: 'Character with this id does not exist'
+        });
+    }
+
+    const characterItems = foundCharacter.items;
 };
