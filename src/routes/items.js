@@ -3,9 +3,9 @@ const itemsController = require('./../controllers/items');
 
 const router = express.Router();
 
+router.get('/character', itemsController.getCharacterItems);
 router.get('/', itemsController.getItems);
 router.get('/:itemId', itemsController.getItem);
-router.get('/character', itemsController.getCharacterItems);
 
 router.post('/', itemsController.addItem);
 
