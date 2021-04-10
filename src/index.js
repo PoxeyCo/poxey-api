@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors')
+const cors = require('cors');
 require('dotenv').config();
 const logger = require('./helpers/logger');
 const requestLogger = require('./middlewares/requestLogger');
@@ -11,15 +11,7 @@ const apiRoute = require('./routes/index');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// app.use(function(req, res, next) {
-//     res.setHeader('Access-Control-Allow-Origin', 'https://poxey-369b6.web.app');
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,authorization');
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-
-//     next();
-// });
-app.use(cors())
+app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 app.use(authProtect);

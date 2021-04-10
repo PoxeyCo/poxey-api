@@ -103,11 +103,12 @@ module.exports.getCharacterItems = async (req, res) => {
     const characterItems = foundCharacter.items;
     const parsedItems = [];
 
-    characterItems.forEach(async (item, index) => {
+    characterItems.forEach(async (item) => {
         const parsedItem = await itemActions.findItemById(item);
         parsedItems.push(parsedItem);
 
-        if (index + 1 >= characterItems.length) {
+        if (parsedItems.length === characterItems.length) {
+            console.log(parsedItems, characterItems)
             res.status(200).json({
                 status: true,
                 items: parsedItems

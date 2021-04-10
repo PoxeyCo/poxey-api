@@ -1,10 +1,12 @@
 const Character = require('./characterModel');
 const logger = require('./../../helpers/logger');
 const ObjectId = require('mongodb').ObjectId;
+const random = require('./../../helpers/random');
 const itemActions = require('./../item/itemActions');
 
 module.exports.createCharacter = async ({ userId }) => {
     const defaultItems = ['606033503b3b550004aac9fe', '606033fd3b3b550004aaca08', '6060349b3b3b550004aaca11'];
+    const defaultPokemons = ['606b01209346b5272a47b395', '606b01239346b5272a47b398', '606b01269346b5272a47b39b'];
 
     const newCharacter = {
         userId: ObjectId(userId),
@@ -15,7 +17,8 @@ module.exports.createCharacter = async ({ userId }) => {
             weapon: '6060349b3b3b550004aaca11'
         },
         power: 14,
-        items: defaultItems
+        items: defaultItems,
+        pokemons: [defaultPokemons[random.randomInteger(0, defaultPokemons.length - 1)]]
     };
 
     try {

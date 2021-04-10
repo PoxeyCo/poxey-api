@@ -20,6 +20,11 @@ const characterSchema = new mongoose.Schema({
         required: false,
         default: 0
     },
+    selectedPokemons: {
+        type: Array,
+        required: false,
+        default: []
+    },
     selectedItems: {
         helmet: {
             type: mongoose.ObjectId,
