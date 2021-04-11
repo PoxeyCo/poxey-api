@@ -60,4 +60,4 @@ module.exports.findUserByName = async (username) => {
         logger.error('Error with finding user by username');
         return null;
     }
-}
+};

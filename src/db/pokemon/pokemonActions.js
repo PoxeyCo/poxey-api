@@ -10,6 +10,15 @@ module.exports.getAllPokemons = async () => {
     }
 };
 
+module.exports.findPokemonById = async (id) => {
+    try {
+        const foundPokemon = await Pokemon.findOne({ _id: id });
+        return foundPokemon;
+    } catch (e) {
+        return null;
+    }
+};
+
 module.exports.addPokemon = async ({ pokemonId, name, sprite, type, stats }) => {
     const power = Object.values(stats).reduce((v, a) => v + a) / 4;
 

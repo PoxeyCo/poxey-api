@@ -108,7 +108,6 @@ module.exports.getCharacterItems = async (req, res) => {
         parsedItems.push(parsedItem);
 
         if (parsedItems.length === characterItems.length) {
-            console.log(parsedItems, characterItems)
             res.status(200).json({
                 status: true,
                 items: parsedItems

@@ -1,8 +1,20 @@
+const nodemailer = require('nodemailer');
 const validate = require('./../helpers/validate');
 const crypt = require('./../helpers/crypt');
+const random = require('./../helpers/random');
 const jwtToken = require('../helpers/jwtToken');
 const userActions = require('./../db/user/userActions');
+const recoveryActions = require('./../db/recovery/recoveryAction');
 const logger = require('./../helpers/logger');
+require('dotenv').config();
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+});
 
 module.exports.signIn = async (req, res) => {
     const { login, password } = req.body;
@@ -170,6 +182,133 @@ module.exports.getUserInfo = async (req, res) => {
             expToNextLevel: foundUser.expToNextLevel,
             experience: foundUser.experience,
         },
+    });
+};
+
+module.exports.recoverPassword = async (req, res) => {
+    const { email } = req.body;
+
+    if (email === null) {
+        return res.status(400).json({
+            status: false,
+            errors: [1]
+        });
+    }
+
+    const foundUser = await userActions.findUserByEmail(email);
+
+    if (foundUser === null) {
+        return res.status(400).json({
+            status: false,
+            errors: [2]
+        });
+    }
+
+    const code = random.randomInteger(111111, 999999);
+
+    const foundRecovery = await recoveryActions.findRecoveryEntityByEmail(email);
+
+    if (foundRecovery) {
+        await foundRecovery.updateOne({ email, code });
+    }
+    else {
+        await recoveryActions.addRecoveryEntity({ email, code });
+    }
+
+    let info = await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: '[POXEY] Recover Password',
+        html: `<h1>POXEY Password Recovery</h1><p>Recover code: <b>${code}</b></p>`
+    });
+
+    return res.status(200).json({
+        status: true,
+        data: info
+    });
+};
+
+module.exports.checkCode = async (req, res) => {
+    const { email, code } = req.body;
+
+    if (email === null) {
+        return res.status(400).json({
+            status: false,
+            errors: [1]
+        });
+    }
+
+    if (code === null || isNaN(code)) {
+        return res.status(400).json({
+            status: false,
+            errors: [2]
+        });
+    }
+
+    const recoveryEntity = await recoveryActions.findRecoveryEntityByEmail(email);
+
+    if (recoveryEntity === null) {
+        return res.status(400).json({
+            status: false,
+            errors: [3]
+        });
+    }
+
+    if (code !== recoveryEntity.code) {
+        return res.status(400).json({
+            status: false,
+            errors: [4]
+        });
+    }
+
+    recoveryEntity.set('isCodeChecked', true);
+    await recoveryEntity.save();
+
+    res.status(200).json({
+        status: true
+    });
+};
+
+module.exports.updateRecoverPassword = async (req, res) => {
+    const { email, password } = req.body;
+
+    if (email === null) {
+        return res.status(400).json({
+            status: false,
+            errors: [1]
+        });
+    }
+
+    const foundRecovery = await recoveryActions.findRecoveryEntityByEmail(email);
+
+    if (foundRecovery === null) {
+        return res.status(400).json({
+            status: false,
+            errors: [2]
+        });
+    }
+
+    if (foundRecovery.isCodeChecked === false) {
+        return res.status(400).json({
+            status: false,
+            errors: [3]
+        });
+    }
+
+    if (validate.validatePassword(password) === false) {
+        return res.status(400).json({
+            status: false,
+            errors: [4]
+        });
+    }
+
+    const hashedPassword = await crypt.hashPassword(password);
+    const foundUser = await userActions.findUserByEmail(email);
+
+    await foundUser.updateOne({ password: hashedPassword });
+
+    res.status(200).json({
+        status: true
     });
 };
 
