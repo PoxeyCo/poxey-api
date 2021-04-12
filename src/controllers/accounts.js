@@ -231,6 +231,8 @@ module.exports.recoverPassword = async (req, res) => {
 module.exports.checkCode = async (req, res) => {
     const { email, code } = req.body;
 
+    console.log(email, code)
+
     if (email === null) {
         return res.status(400).json({
             status: false,
@@ -246,6 +248,8 @@ module.exports.checkCode = async (req, res) => {
     }
 
     const recoveryEntity = await recoveryActions.findRecoveryEntityByEmail(email);
+
+    console.log(recoveryEntity)
 
     if (recoveryEntity === null) {
         return res.status(400).json({
