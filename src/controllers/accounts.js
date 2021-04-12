@@ -233,14 +233,14 @@ module.exports.checkCode = async (req, res) => {
 
     console.log(email, code)
 
-    if (email === null) {
+    if (email === undefined) {
         return res.status(400).json({
             status: false,
             errors: [1]
         });
     }
 
-    if (code === null || isNaN(code)) {
+    if (code === undefined || isNaN(code)) {
         return res.status(400).json({
             status: false,
             errors: [2]
