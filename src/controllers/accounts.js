@@ -306,6 +306,7 @@ module.exports.updateRecoverPassword = async (req, res) => {
     const foundUser = await userActions.findUserByEmail(email);
 
     await foundUser.updateOne({ password: hashedPassword });
+    await foundRecovery.deleteOne();
 
     res.status(200).json({
         status: true
