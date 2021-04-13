@@ -8,7 +8,7 @@ module.exports.createCharacter = async ({ userId }) => {
     const defaultItems = ['606033503b3b550004aac9fe', '606033fd3b3b550004aaca08', '6060349b3b3b550004aaca11'];
     const defaultPokemons = { '606b01209346b5272a47b395': 47, '606b01239346b5272a47b398': 49.75, '606b01269346b5272a47b39b': 50 };
 
-    const startPokemonId = Object.keys(defaultPokemons)[random.randomInteger(0, defaultPokemons.length - 1)];  
+    const startPokemonId = Object.keys(defaultPokemons)[random.randomInteger(0, 3 - 1)];
 
     const newCharacter = {
         userId: ObjectId(userId),
