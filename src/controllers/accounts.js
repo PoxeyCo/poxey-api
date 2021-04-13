@@ -188,7 +188,7 @@ module.exports.getUserInfo = async (req, res) => {
 module.exports.recoverPassword = async (req, res) => {
     const { email } = req.body;
 
-    if (email === null) {
+    if (email === undefined) {
         return res.status(400).json({
             status: false,
             errors: [1]
@@ -197,7 +197,7 @@ module.exports.recoverPassword = async (req, res) => {
 
     const foundUser = await userActions.findUserByEmail(email);
 
-    if (foundUser === null) {
+    if (foundUser === undefined) {
         return res.status(400).json({
             status: false,
             errors: [2]
@@ -231,8 +231,6 @@ module.exports.recoverPassword = async (req, res) => {
 module.exports.checkCode = async (req, res) => {
     const { email, code } = req.body;
 
-    console.log(email, code)
-
     if (email === undefined) {
         return res.status(400).json({
             status: false,
@@ -248,8 +246,6 @@ module.exports.checkCode = async (req, res) => {
     }
 
     const recoveryEntity = await recoveryActions.findRecoveryEntityByEmail(email);
-
-    console.log(recoveryEntity)
 
     if (recoveryEntity === null) {
         return res.status(400).json({
@@ -276,7 +272,7 @@ module.exports.checkCode = async (req, res) => {
 module.exports.updateRecoverPassword = async (req, res) => {
     const { email, password } = req.body;
 
-    if (email === null) {
+    if (email === undefined) {
         return res.status(400).json({
             status: false,
             errors: [1]
@@ -285,7 +281,7 @@ module.exports.updateRecoverPassword = async (req, res) => {
 
     const foundRecovery = await recoveryActions.findRecoveryEntityByEmail(email);
 
-    if (foundRecovery === null) {
+    if (foundRecovery === undefined) {
         return res.status(400).json({
             status: false,
             errors: [2]
