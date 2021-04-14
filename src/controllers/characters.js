@@ -126,3 +126,50 @@ module.exports.equipItem = async (req, res) => {
         selectedItems: userCharacter.selectedItems
     });
 };
+
+module.exports.equipPokemon = async (req, res) => {
+    if (req.isAuth === false) {
+        return res.status(403).json({
+            status: false,
+            error: 'You must be logged in'
+        });
+    }
+
+    const { pokemonId, pokemonPosition } = req.body;
+    const { id: userId } = req.userPayload;
+
+    const user = await userActions.findUserById(userId);
+    const userCharacter = await characterActions.findCharacterById(user.characterId);
+
+    if (isNaN(pokemonPosition) || pokemonPosition < 0 || pokemonPosition > 2) {
+        return res.status(400).json({
+            status: false,
+            errors: [1]
+        });
+    }
+
+    if (userCharacter.pokemons.includes(pokemonId) === false) {
+        return res.status(400).json({
+            status: false,
+            errors: [2]
+        });
+    }
+
+    const foundPokemon = Object.values(userCharacter.selectedPokemons).find((id) => String(id) === pokemonId);
+
+    if (foundPokemon) {
+        return res.status(400).json({
+            status: false,
+            errors: [3]
+        });
+    }
+
+    userCharacter.selectedPokemons[pokemonPosition] = pokemonId;
+
+    await userCharacter.save();
+
+    res.status(200).json({
+        status: true,
+        selectedPokemons: userCharacter.selectedPokemons
+    });
+};
