@@ -18,7 +18,7 @@ module.exports.createCharacter = async ({ userId }) => {
             boots: '606033fd3b3b550004aaca08',
             weapon: '6060349b3b3b550004aaca11'
         },
-        power: 14 + defaultPokemons[startPokemonId],
+        power: 14,
         items: defaultItems,
         pokemons: [startPokemonId]
     };

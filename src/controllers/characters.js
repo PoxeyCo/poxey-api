@@ -2,6 +2,7 @@ const userActions = require('./../db/user/userActions');
 const itemActions = require('./../db/item/itemActions');
 const itemTypes = require('./../types/itemTypes');
 const characterActions = require('./../db/character/characterActions');
+const pokemonActions = require('./../db/pokemon/pokemonActions');
 
 module.exports.getCharacher = async (req, res) => {
     if (req.isAuth === false) {
@@ -109,6 +110,11 @@ module.exports.equipItem = async (req, res) => {
         })
     }
 
+    const prevItem = await itemActions.findItemById(userCharacter.selectedItems.helmet);
+
+    userCharacter.power -= prevItem ? prevItem.power : 0;
+    userCharacter.power += item.power;
+
     if (item.type === itemTypes.HELMET) {
         userCharacter.selectedItems.helmet = itemId;
     } else if (item.type === itemTypes.CHEST) {
@@ -123,7 +129,10 @@ module.exports.equipItem = async (req, res) => {
 
     res.status(200).json({
         status: true,
-        selectedItems: userCharacter.selectedItems
+        selectedItems: userCharacter.selectedItems,
+        character: {
+            power: userCharacter.power
+        }
     });
 };
 
@@ -164,12 +173,21 @@ module.exports.equipPokemon = async (req, res) => {
         });
     }
 
+    const newPokemon = await pokemonActions.findPokemonById(pokemonId);
+    const prevPokemon = await pokemonActions.findPokemonById(userCharacter.selectedPokemons[pokemonPosition]);
+
+    userCharacter.power -= prevPokemon ? prevPokemon.power : 0;
+    userCharacter.power += newPokemon.power;
+
     userCharacter.selectedPokemons[pokemonPosition] = pokemonId;
 
     await userCharacter.save();
 
     res.status(200).json({
         status: true,
-        selectedPokemons: userCharacter.selectedPokemons
+        selectedPokemons: userCharacter.selectedPokemons,
+        character: {
+            power: userCharacter.power
+        }
     });
 };
