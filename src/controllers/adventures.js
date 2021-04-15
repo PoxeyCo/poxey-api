@@ -148,7 +148,9 @@ module.exports.completeAdventure = async (req, res) => {
     const level = await levelActions.findLevelById(foundAdventure.levelId);
 
     if (foundAdventure.isSuccesful) {
-        character.set('lastLevelCompleted', level.number);
+        if (character.lastLevelCompleted < level.number) {
+            character.set('lastLevelCompleted', level.number);
+        }
 
         foundUser.addCash((level.number * level.power) / 3);
         foundUser.addExperience(Math.ceil((level.number * level.power) / 2));
