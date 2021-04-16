@@ -188,7 +188,7 @@ module.exports.getUserInfo = async (req, res) => {
 module.exports.recoverPassword = async (req, res) => {
     const { email } = req.body;
 
-    if (email === undefined) {
+    if (email === undefined || validate.validateEmail(email) === false) {
         return res.status(400).json({
             status: false,
             errors: [1]
@@ -197,7 +197,7 @@ module.exports.recoverPassword = async (req, res) => {
 
     const foundUser = await userActions.findUserByEmail(email);
 
-    if (foundUser === undefined) {
+    if (foundUser === null) {
         return res.status(400).json({
             status: false,
             errors: [2]
