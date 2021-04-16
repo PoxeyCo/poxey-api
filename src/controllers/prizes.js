@@ -2,6 +2,37 @@ const userActions = require('./../db/user/userActions');
 const characterActions = require('./../db/character/characterActions');
 const prizesType = require('./../types/prizesTypes');
 
+module.exports.getAllPosiblePrizes = async (req, res) => {
+    res.status(200).json({
+        status: true,
+        prizes: prizesType
+    });
+};
+
+module.exports.getNextPrize = async (req, res) => {
+    if (req.isAuth === false) {
+        return res.status(403).json({
+            status: false,
+            error: 'You must be logged in'
+        });
+    }
+
+    const { id: userId } = req.userPayload;
+    const foundUser = await userActions.findUserById(userId);
+
+    const millisecondDelta = (Date.now() - foundUser.dailyRewardLastTaken);
+    const prize = prizesType[foundUser.dailyRewardDaysInRow];
+    const isCanTakeReward = foundUser.dailyRewardLastTaken === null ? true : millisecondDelta > 86400000;
+
+
+    res.status(200).json({
+        status: true,
+        prize,
+        isCanTakeReward,
+        millisecondsLeft: millisecondDelta > 86400000 ? null : millisecondDelta
+    });
+};
+
 module.exports.getPrize = async (req, res) => {
     if (req.isAuth === false) {
         return res.status(403).json({
