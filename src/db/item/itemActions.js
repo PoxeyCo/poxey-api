@@ -76,4 +76,4 @@ module.exports.isValidItems = async (itemIds) => {
             }
         });
     });
-}
+};
