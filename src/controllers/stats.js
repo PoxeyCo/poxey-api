@@ -15,7 +15,7 @@ module.exports.getCounts = async (req, res) => {
             items: itemCounts,
             levels: levelCounts,
             users: userCounts,
-            pokemos: pokemonCounts
+            pokemons: pokemonCounts
         }
     });
 };
